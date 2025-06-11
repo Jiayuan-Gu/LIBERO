@@ -1,7 +1,11 @@
-from libero.libero import benchmark
-from libero.libero.envs import OffScreenRenderEnv
-from libero.libero import get_libero_path
+"""This script is adpated from README to illustrate how to use the benchmark suite."""
 import os
+
+import cv2
+import numpy as np
+
+from libero.libero import benchmark, get_libero_path
+from libero.libero.envs import OffScreenRenderEnv
 
 benchmark_dict = benchmark.get_benchmark_dict()
 task_suite_name = "libero_spatial" # can also choose libero_spatial, libero_object, etc.
@@ -32,11 +36,9 @@ env.set_init_state(init_states[init_state_id])
 dummy_action = [0.] * 7
 for step in range(10):
     obs, reward, done, info = env.step(dummy_action)
-    import cv2
-    import numpy as np
     cv2.imshow(
         "Observation",
         obs["agentview_image"].astype(np.uint8)[::-1]
     )
-    cv2.waitKey(0)
+    cv2.waitKey(100)
 env.close()
