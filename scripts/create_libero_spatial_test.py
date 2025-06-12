@@ -1,3 +1,8 @@
+"""  
+生成libero-spatial-test benchmark的脚本  
+包含原有10个libero_spatial任务 + 新增10个空间任务
+（已根据参考BDDL扩充物品数量和类型）
+"""  
 import os  
 import numpy as np  
 from libero.libero.utils.mu_utils import register_mu, InitialSceneTemplates  

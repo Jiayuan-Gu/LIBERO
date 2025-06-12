@@ -12,7 +12,7 @@ task_suite_name = "libero_spatial_test" # can also choose libero_spatial, libero
 task_suite = benchmark_dict[task_suite_name]()
 
 # retrieve a specific task
-task_id = 15
+task_id = 9
 task = task_suite.get_task(task_id)
 task_name = task.name
 task_description = task.language
@@ -23,8 +23,8 @@ print(f"[info] retrieving task {task_id} from suite {task_suite_name}, the " + \
 # step over the environment
 env_args = {
     "bddl_file_name": task_bddl_file,
-    "camera_heights": 128,
-    "camera_widths": 128
+    "camera_heights": 1000,
+    "camera_widths": 1000
 }
 env = OffScreenRenderEnv(**env_args)
 env.seed(0)
@@ -34,7 +34,7 @@ init_state_id = 0
 env.set_init_state(init_states[init_state_id])
 
 dummy_action = [0.] * 7
-for step in range(50):
+for step in range(10):
     obs, reward, done, info = env.step(dummy_action)
     cv2.imshow(
         "Observation",
