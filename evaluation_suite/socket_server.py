@@ -84,6 +84,10 @@ class LiberoServer:
         client_socket.sendall(msg_size + json_data)
 
     def handle_client(self, client_socket, addr):
+        
+        # 60s timeout
+        client_socket.settimeout(60.0) 
+
         session_id = None
         try:
             while True:

@@ -8,11 +8,11 @@ from libero.libero import benchmark, get_libero_path
 from libero.libero.envs import OffScreenRenderEnv
 
 benchmark_dict = benchmark.get_benchmark_dict()
-task_suite_name = "libero_spatial" # can also choose libero_spatial, libero_object, etc.
+task_suite_name = "libero_spatial_test" # can also choose libero_spatial, libero_object, etc.
 task_suite = benchmark_dict[task_suite_name]()
 
 # retrieve a specific task
-task_id = 0
+task_id = 15
 task = task_suite.get_task(task_id)
 task_name = task.name
 task_description = task.language
@@ -34,7 +34,7 @@ init_state_id = 0
 env.set_init_state(init_states[init_state_id])
 
 dummy_action = [0.] * 7
-for step in range(10):
+for step in range(50):
     obs, reward, done, info = env.step(dummy_action)
     cv2.imshow(
         "Observation",

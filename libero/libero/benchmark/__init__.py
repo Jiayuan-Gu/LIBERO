@@ -55,6 +55,7 @@ def grab_language_from_filename(x):
 
 libero_suites = [
     "libero_spatial",
+    "libero_spatial_test",
     "libero_object",
     "libero_goal",
     "libero_90",
@@ -217,3 +218,29 @@ class LIBERO_100(Benchmark):
         super().__init__(task_order_index=task_order_index)
         self.name = "libero_100"
         self._make_benchmark()
+
+@register_benchmark  
+class LIBERO_SPATIAL_TEST(Benchmark):  
+    def __init__(self, task_order_index=0):  
+        super().__init__(task_order_index=task_order_index)  
+        self.name = "libero_spatial_test"  
+        self._make_benchmark()
+
+    def _make_benchmark(self):  
+        tasks = list(task_maps[self.name].values())  
+        # 对于20任务的benchmark，使用完整的任务列表  
+        if len(tasks) == 20:  
+            if self.task_order_index == 0:  
+                self.tasks = tasks  # 使用原始顺序  
+            else:  
+                # 可以实现自定义的20任务随机顺序  
+                import random  
+                random.seed(self.task_order_index)  
+                indices = list(range(20))  
+                random.shuffle(indices)  
+                self.tasks = [tasks[i] for i in indices]  
+        else:  
+            # 回退到原始逻辑  
+            print(f"[info] using task orders {task_orders[self.task_order_index]}")  
+            self.tasks = [tasks[i] for i in task_orders[self.task_order_index]]  
+        self.n_tasks = len(self.tasks)
