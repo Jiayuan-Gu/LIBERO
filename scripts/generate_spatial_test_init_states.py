@@ -1,3 +1,6 @@
+"""  
+为libero_spatial_test benchmark生成初始状态文件(.pruned_init)  
+"""  
 import os  
 import torch  
 import numpy as np  
@@ -46,23 +49,30 @@ def generate_init_states_for_task(bddl_file_path, task_name, num_states=50):
   
 def save_init_states(init_states, save_path):  
     """  
-    save initial states to .pruned_init files
+    保存初始状态到.pruned_init文件  
+      
+    Args:  
+        init_states: 初始状态列表  
+        save_path: 保存路径  
     """  
-
+    # 确保目录存在  
     os.makedirs(os.path.dirname(save_path), exist_ok=True)  
       
-
+    # 使用torch.save保存，这是LIBERO的标准格式  
     torch.save(init_states, save_path)  
-    print(f"save to: {save_path}")  
+    print(f"初始状态已保存到: {save_path}")  
   
 def generate_all_spatial_test_init_states():  
-
- 
+    """  
+    为所有libero_spatial_test任务生成初始状态文件  
+    """  
+    # 获取路径  
     bddl_base_path = get_libero_path("bddl_files")  
     init_states_base_path = get_libero_path("init_states")  
-  
+      
+    # 定义所有任务（原有10个 + 新增10个）  
     all_tasks = [  
-        # libero_spatial
+        # 原有的10个libero_spatial任务  
         "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",  
         "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",  
         "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",  
@@ -74,7 +84,7 @@ def generate_all_spatial_test_init_states():
         "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",  
         "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",  
           
-        # added tasks
+        # 新增的10个任务  
         "pick_up_the_black_bowl_from_left_corner_and_place_it_on_the_right_plate",  
         "pick_up_the_black_bowl_behind_the_ramekin_and_place_it_on_the_front_plate",  
         "pick_up_the_black_bowl_from_far_left_and_place_it_on_the_center_plate",  
@@ -87,7 +97,7 @@ def generate_all_spatial_test_init_states():
         "pick_up_the_black_bowl_adjacent_to_cabinet_and_place_it_on_the_distant_plate",  
     ]  
       
-
+    # 创建目标目录  
     target_init_states_dir = os.path.join(init_states_base_path, "libero_spatial_test")  
     os.makedirs(target_init_states_dir, exist_ok=True)  
       
@@ -95,66 +105,67 @@ def generate_all_spatial_test_init_states():
     failed_tasks = []  
       
     for i, task_name in enumerate(all_tasks):  
-        print(f"\nprocessing {i+1}/{len(all_tasks)}: {task_name}")  
+        print(f"\n处理任务 {i+1}/{len(all_tasks)}: {task_name}")  
           
- 
-        if i < 10: 
+        # 构建BDDL文件路径  
+        if i < 10:  # 原有任务，从libero_spatial复制  
             bddl_file_path = os.path.join(bddl_base_path, "libero_spatial", f"{task_name}.bddl")  
-
+            # 对于原有任务，直接复制现有的init文件  
             source_init_path = os.path.join(init_states_base_path, "libero_spatial", f"{task_name}.pruned_init")  
             target_init_path = os.path.join(target_init_states_dir, f"{task_name}.pruned_init")  
               
             if os.path.exists(source_init_path):  
                 import shutil  
                 shutil.copy2(source_init_path, target_init_path)  
-                print(f"copied original tasks: {task_name}")  
+                print(f"已复制现有初始状态文件: {task_name}")  
                 successful_tasks += 1  
                 continue  
-        else:  
+        else:  # 新任务，需要生成  
             bddl_file_path = os.path.join(bddl_base_path, "libero_spatial_test", f"{task_name}.bddl")  
           
-
+        # 检查BDDL文件是否存在  
         if not os.path.exists(bddl_file_path):  
-            print(f"error: no BDDL files: {bddl_file_path}")  
+            print(f"错误: BDDL文件不存在: {bddl_file_path}")  
             failed_tasks.append(task_name)  
             continue  
           
         try:  
-            # generate initial states
+            # 生成初始状态  
             init_states = generate_init_states_for_task(bddl_file_path, task_name, num_states=50)  
               
             if len(init_states) == 0:  
-                print(f"error: cannot generate any initial states for {task_name}")  
+                print(f"错误: 无法为任务 {task_name} 生成任何初始状态")  
                 failed_tasks.append(task_name)  
                 continue  
               
-            # save initial states
+            # 保存初始状态  
             save_path = os.path.join(target_init_states_dir, f"{task_name}.pruned_init")  
             save_init_states(init_states, save_path)  
               
             successful_tasks += 1  
               
         except Exception as e:  
+            print(f"错误: 处理任务 {task_name} 时出现异常: {e}")  
             failed_tasks.append(task_name)  
             continue  
       
- 
-    print(f"\n=== FINISH GENERATING ===")  
-    print(f"success for: {successful_tasks}/{len(all_tasks)} tasks")  
-    print(f"{len(failed_tasks)} tasks failed ")  
+    # 输出总结  
+    print(f"\n=== 生成完成 ===")  
+    print(f"成功处理: {successful_tasks}/{len(all_tasks)} 个任务")  
+    print(f"失败任务: {len(failed_tasks)} 个")  
       
     if failed_tasks:  
-        print("List of failed tasks:")  
+        print("失败的任务列表:")  
         for task in failed_tasks:  
             print(f"  - {task}")  
       
-    print(f"\nsave at: {target_init_states_dir}")  
+    print(f"\n初始状态文件保存在: {target_init_states_dir}")  
   
 def main():  
-
-    print("state to generate for libero_spatial_test benchmark...")  
+    """主函数"""  
+    print("开始为libero_spatial_test benchmark生成初始状态文件...")  
     generate_all_spatial_test_init_states()  
-    print("FINISH")  
+    print("初始状态文件生成完成!")  
   
 if __name__ == "__main__":  
     main()

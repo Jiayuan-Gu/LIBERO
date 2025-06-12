@@ -5,70 +5,70 @@
       (plate_region
           (:target main_table)
           (:ranges (
-              (0.05 0.19 0.07 0.21)
+              (0.0627 0.2373 0.0827 0.2573)
             )
           )
       )
       (next_to_plate_region
           (:target main_table)
           (:ranges (
-              (0.0 0.3 0.02 0.32)
+              (-0.0345 0.3294 -0.0145 0.3494)
             )
           )
       )
       (box_region
           (:target main_table)
           (:ranges (
-              (0.06 0.02 0.08 0.04)
+              (0.0845 0.0093 0.1045 0.0293)
             )
           )
       )
       (next_to_box_region
           (:target main_table)
           (:ranges (
-              (0.12 -0.08 0.14 -0.06)
+              (0.1003 -0.0509 0.1203 -0.0309)
             )
           )
       )
       (between_plate_ramekin_region
           (:target main_table)
           (:ranges (
-              (-0.06 0.19 -0.04 0.21)
+              (-0.0158 0.2189 0.0042 0.2389)
             )
           )
       )
       (ramekin_region
           (:target main_table)
           (:ranges (
-              (-0.21 0.19 -0.19 0.21)
+              (-0.2314 0.1767 -0.2114 0.1967)
             )
           )
       )
       (next_to_ramekin_region
           (:target main_table)
           (:ranges (
-              (-0.19 0.31 -0.17 0.33)
+              (-0.1514 0.3102 -0.1314 0.3302)
             )
           )
       )
       (table_center
           (:target main_table)
           (:ranges (
-              (-0.1 -0.01 -0.05 0.01)
+              (-0.0987 -0.0090 -0.0487 0.0110)
             )
           )
       )
       (table_front
           (:target main_table)
           (:ranges (
-              (0.19 -0.01 0.21 0.01)
+              (0.1664 -0.0524 0.1864 -0.0324)
             )
           )
       )
       (cabinet_region
           (:target main_table)
           (:ranges (
-              (0.02 -0.28 0.04 -0.26)
+              (0.0477 -0.2859 0.0677 -0.2659)
             )
           )
           (:yaw_rotation (
@@ -79,7 +79,7 @@
       (stove_region
           (:target main_table)
           (:ranges (
-              (-0.42 -0.15 -0.4 -0.13)
+              (-0.4239 -0.1103 -0.4039 -0.0903)
             )
           )
       )
